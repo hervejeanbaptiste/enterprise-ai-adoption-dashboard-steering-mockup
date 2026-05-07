@@ -156,3 +156,242 @@ export const governanceForecast = [
   { day: "25", actual: 1388, cap: 1333 },
   { day: "30", actual: 1660, cap: 1600 }
 ];
+
+// Workstream operating model content is based only on the 5/4/26 weekly update.
+export const workstreamTemplateSections = [
+  "What happened this week",
+  "Evidence of impact",
+  "How this supports AI adoption goals",
+  "Next week / upcoming priorities",
+  "Risks / help needed",
+  "Dependencies",
+  "Decisions / support needed",
+  "Executive summary"
+];
+
+export const workstreamActionMetrics = [
+  { label: "Week Ending", value: "5/4/26", detail: "Standardized weekly update cadence" },
+  { label: "Overall Status", value: "Green", detail: "Building Momentum", tone: "success" },
+  { label: "Workstreams Updated", value: "5", detail: "Individual workstream updates captured" },
+  { label: "Priority Actions", value: "9", detail: "Named next-week actions across teams", tone: "accent" },
+  { label: "Open Risks", value: "7", detail: "Tooling, learning, hosting, and adoption risks" },
+  { label: "Support Asks", value: "6", detail: "Decisions and leadership support needed" }
+];
+
+export const workstreamRollup = {
+  status: "Building Momentum",
+  weekEnding: "5/4/26",
+  happened: [
+    "AI-enabled sales metrics initiative launched to measure seller AI impact.",
+    "Delivery workstreams aligned around identifying scalable AI-enabled workflows.",
+    "Intellio Agent MVP moved into production.",
+    "Upskilling programs expanded across sellers, delivery, and aspiring builders.",
+    "AI Champions program continued scaling through grassroots recruiting and enablement.",
+    "Builder Pipeline launched foundational builder infrastructure and community assets."
+  ],
+  impact: [
+    "AI Champions membership increased 57% since pivot on 3/26.",
+    "Intellio reporting expanded to include CoDex usage and power-user signals.",
+    "Builder Guide, Builder Community, and AI @ West Monroe microsite launched.",
+    "Learning labs expanded across seller, delivery, and builder audiences.",
+    "Initial AI adoption dashboard work initiated."
+  ],
+  goals: [
+    "Expands AI fluency across the firm",
+    "Establishes AI adoption measurement foundations",
+    "Builds reusable AI delivery capabilities",
+    "Expands grassroots AI advocacy and workflow adoption",
+    "Creates scalable enablement infrastructure"
+  ],
+  priorities: [
+    { priority: "Launch AI Store", owners: "Intellio", timing: "This week" },
+    { priority: "Expand AI adoption dashboard work", owners: "AI-Enabled Sales", timing: "In progress" },
+    { priority: "Launch BEN and ERG Champion recruiting", owners: "AI Champions", timing: "Upcoming" },
+    { priority: "Finalize Builder Pipeline adoption plan", owners: "Builder Pipeline", timing: "Upcoming" }
+  ],
+  risks: [
+    "CoDex and AI tooling remain intimidating for non-technical users.",
+    "Hosting, API, and CloudPC dependencies remain unresolved.",
+    "Low AI for Sellers learning lab enrollment.",
+    "Additional analytics and reporting support needed."
+  ],
+  dependencies: [
+    "Builder enablement depends on finalized hosting/API guidance.",
+    "AI Store rollout depends on microservices and MCP release work.",
+    "Delivery scaling depends on practice lead engagement and prioritization."
+  ],
+  decisions: [
+    "Need guidance on enterprise AI adoption metrics usage.",
+    "Need prioritization alignment on enterprise architecture upskilling.",
+    "Need leadership support for protected learning time."
+  ],
+  summary:
+    "The AI adoption program continues transitioning from early experimentation toward operational scaling. The strongest momentum areas are AI Champions growth, builder community development, and Intellio production capabilities. Key challenges remain tooling complexity, onboarding friction, and dependency management as adoption scales."
+};
+
+export const workstreamUpdates = [
+  {
+    name: "AI-Enabled Sales",
+    leads: "Jessica, Paulina",
+    status: "On Track",
+    tone: "success",
+    summary:
+      "The AI-Enabled Sales workstream has started building the measurement foundation for understanding AI impact on seller workflows and adoption.",
+    happened: ["Identified initial metrics and hypotheses to capture AI usage impact on selling."],
+    impact: [
+      "Initial AI adoption dashboard and seller metrics work initiated.",
+      "Established foundation for measuring seller AI usage and impact."
+    ],
+    goals: [
+      "Establishes AI adoption measurement capability",
+      "Supports AI-enabled commercial workflows",
+      "Creates visibility into seller AI usage patterns"
+    ],
+    priorities: [
+      {
+        priority: "Pull data and scope initial AI use and impact dashboard",
+        owners: "AI-Enabled Sales",
+        timing: "In progress"
+      }
+    ],
+    risks: ["None explicitly identified in update."],
+    dependencies: ["Depends on AI adoption reporting and data availability."],
+    decisions: ["None explicitly identified in update."]
+  },
+  {
+    name: "AI-Enabled Delivery Org-Wide",
+    leads: "Paulina",
+    status: "In Progress",
+    tone: "warning",
+    summary:
+      "The delivery workstream is beginning to align AI adoption around scalable workflow transformation opportunities and delivery impact measurement.",
+    happened: [
+      "Established desire to identify 3-5 AI-enabled delivery workflows across WM.",
+      "Began bottom-up and top-down evaluation process."
+    ],
+    impact: [
+      "Delivery workflow prioritization effort initiated.",
+      "AI adoption reporting being leveraged to track AI tool usage."
+    ],
+    goals: [
+      "Creates scalable delivery transformation opportunities",
+      "Aligns AI adoption to delivery workflows",
+      "Supports measurable delivery enablement"
+    ],
+    priorities: [
+      {
+        priority: "Solicit candidate 3-5 workflows from practice leads",
+        owners: "AI-Enabled Delivery",
+        timing: "In progress"
+      },
+      {
+        priority: "Develop metrics to track delivery impact",
+        owners: "AI-Enabled Delivery",
+        timing: "In progress"
+      }
+    ],
+    risks: ["None explicitly identified in update."],
+    dependencies: ["Depends on practice lead engagement and AI reporting capabilities."],
+    decisions: ["Need prioritization alignment on workflow selection."]
+  },
+  {
+    name: "AI-Enabled Delivery - Intellio/Assets",
+    leads: "Reva, Paulina",
+    status: "On Track",
+    tone: "success",
+    summary:
+      "The Intellio workstream continues operationalizing reusable AI infrastructure and adoption reporting capabilities while preparing for AI Store launch.",
+    happened: [
+      "Intellio Agent MVP moved into production.",
+      "Continued MCP, microservices, and reusable component work.",
+      "Expanded AI adoption reporting capabilities."
+    ],
+    impact: [
+      "Reporting expanded to include CoDex usage, complexity, and power-user signals.",
+      "Builder hosting platform and intake process established.",
+      "AI Store release preparation underway."
+    ],
+    goals: [
+      "Expands reusable AI infrastructure",
+      "Improves AI adoption visibility",
+      "Supports scalable AI builder enablement"
+    ],
+    priorities: [
+      { priority: "Launch new AI Store", owners: "Intellio", timing: "This week" },
+      { priority: "Expand AI adoption reporting capabilities", owners: "Intellio", timing: "In progress" }
+    ],
+    risks: [
+      "Additional hosting automation needed.",
+      "DPA approvals for Anthropic and Gemini remain open."
+    ],
+    dependencies: ["Depends on hosting, MCP, and release coordination work."],
+    decisions: ["Need support for AI usage stats and reporting enhancement."]
+  },
+  {
+    name: "Upskilling",
+    leads: "Michele, Victoria, Jen",
+    status: "Active Progress",
+    tone: "warning",
+    summary:
+      "The Upskilling workstream continues expanding enterprise AI learning capabilities while refining enablement approaches for sellers, delivery teams, and aspiring builders.",
+    happened: [
+      "Continued AI learning labs for sellers, delivery teams, and aspiring builders.",
+      "Conducted Agentic AI mini lab and demo training.",
+      "Expanded planning for 2H2026 learning labs."
+    ],
+    impact: [
+      "Learning labs delivered across multiple audiences.",
+      "Additional aspiring builder learning lab announced.",
+      "Upskilling alignment established for 2H priorities."
+    ],
+    goals: [
+      "Expands enterprise AI fluency",
+      "Supports scalable AI enablement",
+      "Builds practical AI usage capability"
+    ],
+    priorities: [
+      { priority: "Prepare 2H2026 learning lab calendar", owners: "Upskilling", timing: "Upcoming" },
+      { priority: "Launch aspiring builder lab design", owners: "Upskilling", timing: "Upcoming" }
+    ],
+    risks: [
+      "Low AI for Sellers lab enrollment.",
+      "Participants and instructors need protected learning time.",
+      "Questions remain around builder coding expectations."
+    ],
+    dependencies: ["Depends on leadership support and builder guidance content."],
+    decisions: ["Need clarity around CoDex and coding expectations for builders."]
+  },
+  {
+    name: "AI Champions",
+    leads: "Herve",
+    status: "On Track",
+    tone: "success",
+    summary:
+      "The AI Champions workstream continues scaling through grassroots adoption, workflow alignment, and reusable enablement content while surfacing important enterprise adoption barriers.",
+    happened: [
+      "Continued grassroots recruiting and enablement efforts.",
+      "Launched knowledge packaging and sharing flywheel.",
+      "Published AI Adoption Signals and enablement materials."
+    ],
+    impact: [
+      "Membership increased 57% since pivot on 3/26.",
+      "Knowledge-sharing pipeline established.",
+      "Workflow friction and adoption barriers surfaced through Champion feedback."
+    ],
+    goals: [
+      "Expands peer-driven AI adoption",
+      "Builds scalable grassroots enablement",
+      "Improves visibility into workflow friction"
+    ],
+    priorities: [
+      { priority: "Launch BEN and ERG recruiting", owners: "AI Champions", timing: "Upcoming" },
+      { priority: "Focus Champions on priority workflows", owners: "AI Champions", timing: "Upcoming" }
+    ],
+    risks: [
+      "Volunteer sustainability must remain lightweight and impactful.",
+      "CoDex still perceived as too technical for non-engineers."
+    ],
+    dependencies: ["Depends on reusable enablement assets and adoption guidance."],
+    decisions: ["Need guidance on responsible use of adoption metrics."]
+  }
+];

@@ -2,6 +2,7 @@ import { html } from "htm/react";
 import {
   BarChart3,
   BriefcaseBusiness,
+  ClipboardList,
   GraduationCap,
   Hammer,
   LayoutDashboard,
@@ -13,6 +14,7 @@ import {
 const iconMap = {
   executive: LayoutDashboard,
   sales: LineChart,
+  workstreams: ClipboardList,
   delivery: BriefcaseBusiness,
   builders: Hammer,
   upskilling: GraduationCap,

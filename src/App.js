@@ -5,6 +5,7 @@ import {
   BadgeCheck,
   BrainCircuit,
   CircleDollarSign,
+  ClipboardCheck,
   Gauge,
   Sparkles,
   UsersRound
@@ -41,12 +42,17 @@ import {
   sellerBehaviors,
   salesMetrics,
   salesPipeline,
+  workstreamActionMetrics,
+  workstreamRollup,
+  workstreamTemplateSections,
+  workstreamUpdates,
   upskillingMetrics,
   workflowAdoption
 } from "./data/mockData.js";
 
 const navItems = [
   { id: "executive", label: "Executive View" },
+  { id: "workstreams", label: "Workstream Actions" },
   { id: "sales", label: "AI-Enabled Sales" },
   { id: "delivery", label: "AI-Enabled Delivery" },
   { id: "builders", label: "Builder Pipeline" },
@@ -97,6 +103,75 @@ function Panel({ title, eyebrow, children, compact = false }) {
         <h3>${title}</h3>
       </div>
       ${children}
+    </article>
+  `;
+}
+
+function StatusPill({ status, tone = "default" }) {
+  return html`<span className=${`status-pill status-pill--${tone}`}>${status}</span>`;
+}
+
+function BulletList({ items, variant = "default" }) {
+  return html`
+    <ul className=${`bullet-list bullet-list--${variant}`}>
+      ${items.map((item) => html`<li key=${item}>${item}</li>`)}
+    </ul>
+  `;
+}
+
+function WorkstreamCard({ update }) {
+  const priorityColumns = [
+    { key: "priority", label: "Priority" },
+    { key: "owners", label: "Owner(s)" },
+    { key: "timing", label: "Timing" }
+  ];
+
+  return html`
+    <article className=${`workstream-card workstream-card--${update.tone}`}>
+      <div className="workstream-card__header">
+        <div>
+          <span>${update.leads}</span>
+          <h3>${update.name}</h3>
+        </div>
+        <${StatusPill} status=${update.status} tone=${update.tone} />
+      </div>
+
+      <p className="workstream-card__summary">${update.summary}</p>
+
+      <div className="workstream-card__grid">
+        <div>
+          <h4>What happened</h4>
+          <${BulletList} items=${update.happened} />
+        </div>
+        <div>
+          <h4>Evidence of impact</h4>
+          <${BulletList} items=${update.impact} />
+        </div>
+        <div>
+          <h4>Supports adoption goals</h4>
+          <${BulletList} items=${update.goals} variant="check" />
+        </div>
+        <div>
+          <h4>Risks and help needed</h4>
+          <${BulletList} items=${update.risks} />
+        </div>
+      </div>
+
+      <div className="workstream-card__actions">
+        <h4>Next week priorities</h4>
+        <${DataTable} columns=${priorityColumns} rows=${update.priorities} />
+      </div>
+
+      <div className="dependency-row">
+        <div>
+          <span>Dependencies</span>
+          <${BulletList} items=${update.dependencies} />
+        </div>
+        <div>
+          <span>Decisions / support needed</span>
+          <${BulletList} items=${update.decisions} />
+        </div>
+      </div>
     </article>
   `;
 }
@@ -245,6 +320,12 @@ function App() {
     }
   ];
 
+  const priorityColumns = [
+    { key: "priority", label: "Priority" },
+    { key: "owners", label: "Owner(s)" },
+    { key: "timing", label: "Timing" }
+  ];
+
   return html`
     <div className="app-shell">
       <${Sidebar} items=${navItems} activeSection=${activeSection} onNavigate=${navigateToSection} />
@@ -312,8 +393,95 @@ function App() {
         <//>
 
         <${DashboardSection}
-          id="sales"
+          id="workstreams"
           eyebrow="02"
+          title="Workstream Actions"
+          description="Weekly operating cadence for underlying AI adoption workstreams, with consolidated executive rollup and next-action accountability."
+        >
+          <div className="workstream-hero">
+            <div>
+              <span>AI Adoption Program Weekly Executive Rollup</span>
+              <h3>Overall status: ${workstreamRollup.status}</h3>
+              <p>${workstreamRollup.summary}</p>
+            </div>
+            <div className="workstream-hero__status">
+              <${ClipboardCheck} size=${28} />
+              <strong>${workstreamRollup.weekEnding}</strong>
+              <span>Week ending</span>
+            </div>
+          </div>
+
+          <${MetricGrid} metrics=${workstreamActionMetrics} columns="six" />
+
+          <div className="panel-grid panel-grid--two">
+            <${Panel} title="Standard weekly model" eyebrow="Operating template">
+              <div className="template-steps">
+                ${workstreamTemplateSections.map(
+                  (section, index) => html`
+                    <div className="template-step" key=${section}>
+                      <span>${index + 1}</span>
+                      <strong>${section}</strong>
+                    </div>
+                  `
+                )}
+              </div>
+            <//>
+
+            <${Panel} title="Program momentum" eyebrow="What happened and why it matters">
+              <div className="rollup-grid">
+                <div>
+                  <h4>What happened this week</h4>
+                  <${BulletList} items=${workstreamRollup.happened} />
+                </div>
+                <div>
+                  <h4>Evidence of impact</h4>
+                  <${BulletList} items=${workstreamRollup.impact} />
+                </div>
+              </div>
+            <//>
+          </div>
+
+          <div className="panel-grid panel-grid--two workstream-rollup-panels">
+            <${Panel} title="Program priority actions" eyebrow="Next week / upcoming">
+              <${DataTable} columns=${priorityColumns} rows=${workstreamRollup.priorities} />
+            <//>
+
+            <${Panel} title="Risks, dependencies, and asks" eyebrow="Where leadership can unblock scale">
+              <div className="risk-dependency-grid">
+                <div>
+                  <h4>Risks / help needed</h4>
+                  <${BulletList} items=${workstreamRollup.risks} />
+                </div>
+                <div>
+                  <h4>Dependencies</h4>
+                  <${BulletList} items=${workstreamRollup.dependencies} />
+                </div>
+                <div>
+                  <h4>Decisions / support needed</h4>
+                  <${BulletList} items=${workstreamRollup.decisions} />
+                </div>
+              </div>
+            <//>
+          </div>
+
+          <${Panel} title="How this supports AI adoption goals" eyebrow="Program-level linkage">
+            <div className="goal-chip-grid">
+              ${workstreamRollup.goals.map(
+                (goal) => html`<span className="goal-chip" key=${goal}>${goal}</span>`
+              )}
+            </div>
+          <//>
+
+          <div className="workstream-update-grid">
+            ${workstreamUpdates.map(
+              (update) => html`<${WorkstreamCard} key=${update.name} update=${update} />`
+            )}
+          </div>
+        <//>
+
+        <${DashboardSection}
+          id="sales"
+          eyebrow="03"
           title="AI-Enabled Sales"
           description="Pipeline quality, proposal productivity, and field behaviors tied to revenue impact."
         >
@@ -332,7 +500,7 @@ function App() {
 
         <${DashboardSection}
           id="delivery"
-          eyebrow="03"
+          eyebrow="04"
           title="AI-Enabled Delivery"
           description="Operational adoption across delivery workflows, reusable accelerators, and power-user depth."
         >
@@ -369,7 +537,7 @@ function App() {
 
         <${DashboardSection}
           id="builders"
-          eyebrow="04"
+          eyebrow="05"
           title="Builder Pipeline"
           description="The path from practitioner interest to scaled internal AI solutions."
         >
@@ -404,7 +572,7 @@ function App() {
 
         <${DashboardSection}
           id="upskilling"
-          eyebrow="05"
+          eyebrow="06"
           title="Upskilling"
           description="Training completion, labs, and role-specific fluency signals for workforce readiness."
         >
@@ -435,7 +603,7 @@ function App() {
 
         <${DashboardSection}
           id="champions"
-          eyebrow="06"
+          eyebrow="07"
           title="AI Champions"
           description="Distributed change leadership, office activation, and practice-level influence."
         >
@@ -458,7 +626,7 @@ function App() {
 
         <${DashboardSection}
           id="governance"
-          eyebrow="07"
+          eyebrow="08"
           title="Governance"
           description="Usage controls, credit consumption, and risk posture for responsible scale."
         >

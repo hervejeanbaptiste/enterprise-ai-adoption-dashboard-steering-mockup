@@ -12,7 +12,7 @@ export default function DataTable({ columns, rows }) {
         <tbody>
           ${rows.map(
             (row) => html`
-              <tr key=${row.id || row.behavior || row.role || row.workflow}>
+              <tr key=${row.id || row.behavior || row.role || row.workflow || row.priority || row.name}>
                 ${columns.map(
                   (column) => html`
                     <td key=${column.key}>${column.render ? column.render(row) : row[column.key]}</td>
