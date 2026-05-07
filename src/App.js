@@ -52,13 +52,13 @@ import {
 
 const navItems = [
   { id: "executive", label: "Executive View" },
-  { id: "workstreams", label: "Workstream Actions" },
   { id: "sales", label: "AI-Enabled Sales" },
   { id: "delivery", label: "AI-Enabled Delivery" },
   { id: "builders", label: "Builder Pipeline" },
   { id: "upskilling", label: "Upskilling" },
   { id: "champions", label: "AI Champions" },
-  { id: "governance", label: "Governance" }
+  { id: "governance", label: "Governance" },
+  { id: "workstreams", label: "AI Workstream Updates" }
 ];
 
 const metricIcons = [Gauge, UsersRound, BrainCircuit, Sparkles, BadgeCheck, AlertTriangle];
@@ -393,9 +393,194 @@ function App() {
         <//>
 
         <${DashboardSection}
-          id="workstreams"
+          id="sales"
           eyebrow="02"
-          title="Workstream Actions"
+          title="AI-Enabled Sales"
+          description="Pipeline quality, proposal productivity, and field behaviors tied to revenue impact."
+        >
+          <${MetricGrid} metrics=${salesMetrics} columns="five" />
+
+          <div className="panel-grid panel-grid--two">
+            <${Panel} title="Seller behavior adoption" eyebrow="Priority motions">
+              <${DataTable} columns=${sellerColumns} rows=${sellerBehaviors} />
+            <//>
+
+            <${Panel} title="AI-influenced pipeline by practice" eyebrow="$ millions">
+              <${SalesPipelineChart} />
+            <//>
+          </div>
+        <//>
+
+        <${DashboardSection}
+          id="delivery"
+          eyebrow="03"
+          title="AI-Enabled Delivery"
+          description="Operational adoption across delivery workflows, reusable accelerators, and power-user depth."
+        >
+          <${MetricGrid} metrics=${deliveryMetrics} columns="four" />
+
+          <div className="panel-grid panel-grid--two panel-grid--delivery">
+            <${Panel} title="Workflow adoption" eyebrow="Repeatable delivery motions">
+              <div className="workflow-list">
+                ${workflowAdoption.map(
+                  (item) => html`
+                    <${ProgressBar} key=${item.workflow} value=${item.adoption} label=${item.workflow} />
+                  `
+                )}
+              </div>
+            <//>
+
+            <${Panel} title="Goal trajectory" eyebrow="AI-enabled delivery hours">
+              <div className="goal-card">
+                <div className="goal-card__dial">
+                  <span>27%</span>
+                  <small>toward 40% goal</small>
+                </div>
+                <div>
+                  <h4>Delivery adoption is scaling through the highest-frequency workflows.</h4>
+                  <p>
+                    Meeting synthesis and requirements drafting are now mainstream; solution design
+                    acceleration remains the next leadership push.
+                  </p>
+                </div>
+              </div>
+            <//>
+          </div>
+        <//>
+
+        <${DashboardSection}
+          id="builders"
+          eyebrow="04"
+          title="Builder Pipeline"
+          description="The path from practitioner interest to scaled internal AI solutions."
+        >
+          <${MetricGrid} metrics=${builderMetrics} columns="six" />
+
+          <${Panel} title="Builder funnel" eyebrow="Practitioner-to-production conversion">
+            <div className="funnel">
+              ${builderFunnel.map((stage, index) => {
+                const max = builderFunnel[0].value;
+                const width = Math.max((stage.value / max) * 100, 18);
+
+                return html`
+                  <div className="funnel__row" key=${stage.stage}>
+                    <span>${stage.stage}</span>
+                    <div className="funnel__bar-shell">
+                      <div
+                        className="funnel__bar"
+                        style=${{
+                          width: `${width}%`,
+                          background: chartColors[index % chartColors.length]
+                        }}
+                      >
+                        <strong>${stage.value.toLocaleString()}</strong>
+                      </div>
+                    </div>
+                  </div>
+                `;
+              })}
+            </div>
+          <//>
+        <//>
+
+        <${DashboardSection}
+          id="upskilling"
+          eyebrow="05"
+          title="Upskilling"
+          description="Training completion, labs, and role-specific fluency signals for workforce readiness."
+        >
+          <${MetricGrid} metrics=${upskillingMetrics} columns="four" />
+
+          <div className="panel-grid panel-grid--two">
+            <${Panel} title="AI fluency by role" eyebrow="Readiness signal">
+              <${DataTable} columns=${fluencyColumns} rows=${fluencyByRole} />
+            <//>
+
+            <${Panel} title="Training runway" eyebrow="Phase-one completion">
+              <div className="readiness-stack">
+                ${upskillingMetrics.map(
+                  (metric) => html`
+                    <div className="readiness-item" key=${metric.label}>
+                      <div>
+                        <span>${metric.label}</span>
+                        <strong>${metric.value}</strong>
+                      </div>
+                      <${ProgressBar} value=${metric.progress} compact=${true} />
+                    </div>
+                  `
+                )}
+              </div>
+            <//>
+          </div>
+        <//>
+
+        <${DashboardSection}
+          id="champions"
+          eyebrow="06"
+          title="AI Champions"
+          description="Distributed change leadership, office activation, and practice-level influence."
+        >
+          <${MetricGrid} metrics=${championMetrics} columns="four" />
+
+          <${Panel} title="Champion Influence Index" eyebrow="Community activation quality">
+            <div className="influence-grid">
+              ${championInfluence.map(
+                (item) => html`
+                  <div className="influence-card" key=${item.dimension}>
+                    <span>${item.dimension}</span>
+                    <strong>${item.score}</strong>
+                    <${ProgressBar} value=${item.score} compact=${true} />
+                  </div>
+                `
+              )}
+            </div>
+          <//>
+        <//>
+
+        <${DashboardSection}
+          id="governance"
+          eyebrow="07"
+          title="Governance"
+          description="Usage controls, credit consumption, and risk posture for responsible scale."
+        >
+          <div className="risk-banner">
+            <${AlertTriangle} size=${21} />
+            <div>
+              <span>Risk status: High</span>
+              <strong>Restrict 5.4 Pro to approved business-use cases with monitoring.</strong>
+            </div>
+          </div>
+
+          <${MetricGrid} metrics=${governanceMetrics} columns="five" />
+
+          <div className="panel-grid panel-grid--two">
+            <${Panel} title="Monthly credit forecast" eyebrow="Actual burn versus cap">
+              <${GovernanceForecastChart} />
+            <//>
+
+            <${Panel} title="Control posture" eyebrow="Recommended action">
+              <div className="governance-action">
+                <${CircleDollarSign} size=${28} />
+                <h4>Forecast is tracking 3.8% over cap.</h4>
+                <p>
+                  Maintain Codex growth for approved builder and engineering workflows while tightening
+                  access to premium models for unapproved exploratory usage.
+                </p>
+                <div className="policy-list">
+                  <span>Approved use cases</span>
+                  <span>Spend monitoring</span>
+                  <span>Monthly exception review</span>
+                  <span>Leader-owned adoption goals</span>
+                </div>
+              </div>
+            <//>
+          </div>
+        <//>
+
+        <${DashboardSection}
+          id="workstreams"
+          eyebrow="08"
+          title="AI Workstream Updates"
           description="Weekly operating cadence for underlying AI adoption workstreams, with consolidated executive rollup and next-action accountability."
         >
           <div className="workstream-hero">
@@ -476,191 +661,6 @@ function App() {
             ${workstreamUpdates.map(
               (update) => html`<${WorkstreamCard} key=${update.name} update=${update} />`
             )}
-          </div>
-        <//>
-
-        <${DashboardSection}
-          id="sales"
-          eyebrow="03"
-          title="AI-Enabled Sales"
-          description="Pipeline quality, proposal productivity, and field behaviors tied to revenue impact."
-        >
-          <${MetricGrid} metrics=${salesMetrics} columns="five" />
-
-          <div className="panel-grid panel-grid--two">
-            <${Panel} title="Seller behavior adoption" eyebrow="Priority motions">
-              <${DataTable} columns=${sellerColumns} rows=${sellerBehaviors} />
-            <//>
-
-            <${Panel} title="AI-influenced pipeline by practice" eyebrow="$ millions">
-              <${SalesPipelineChart} />
-            <//>
-          </div>
-        <//>
-
-        <${DashboardSection}
-          id="delivery"
-          eyebrow="04"
-          title="AI-Enabled Delivery"
-          description="Operational adoption across delivery workflows, reusable accelerators, and power-user depth."
-        >
-          <${MetricGrid} metrics=${deliveryMetrics} columns="four" />
-
-          <div className="panel-grid panel-grid--two panel-grid--delivery">
-            <${Panel} title="Workflow adoption" eyebrow="Repeatable delivery motions">
-              <div className="workflow-list">
-                ${workflowAdoption.map(
-                  (item) => html`
-                    <${ProgressBar} key=${item.workflow} value=${item.adoption} label=${item.workflow} />
-                  `
-                )}
-              </div>
-            <//>
-
-            <${Panel} title="Goal trajectory" eyebrow="AI-enabled delivery hours">
-              <div className="goal-card">
-                <div className="goal-card__dial">
-                  <span>27%</span>
-                  <small>toward 40% goal</small>
-                </div>
-                <div>
-                  <h4>Delivery adoption is scaling through the highest-frequency workflows.</h4>
-                  <p>
-                    Meeting synthesis and requirements drafting are now mainstream; solution design
-                    acceleration remains the next leadership push.
-                  </p>
-                </div>
-              </div>
-            <//>
-          </div>
-        <//>
-
-        <${DashboardSection}
-          id="builders"
-          eyebrow="05"
-          title="Builder Pipeline"
-          description="The path from practitioner interest to scaled internal AI solutions."
-        >
-          <${MetricGrid} metrics=${builderMetrics} columns="six" />
-
-          <${Panel} title="Builder funnel" eyebrow="Practitioner-to-production conversion">
-            <div className="funnel">
-              ${builderFunnel.map((stage, index) => {
-                const max = builderFunnel[0].value;
-                const width = Math.max((stage.value / max) * 100, 18);
-
-                return html`
-                  <div className="funnel__row" key=${stage.stage}>
-                    <span>${stage.stage}</span>
-                    <div className="funnel__bar-shell">
-                      <div
-                        className="funnel__bar"
-                        style=${{
-                          width: `${width}%`,
-                          background: chartColors[index % chartColors.length]
-                        }}
-                      >
-                        <strong>${stage.value.toLocaleString()}</strong>
-                      </div>
-                    </div>
-                  </div>
-                `;
-              })}
-            </div>
-          <//>
-        <//>
-
-        <${DashboardSection}
-          id="upskilling"
-          eyebrow="06"
-          title="Upskilling"
-          description="Training completion, labs, and role-specific fluency signals for workforce readiness."
-        >
-          <${MetricGrid} metrics=${upskillingMetrics} columns="four" />
-
-          <div className="panel-grid panel-grid--two">
-            <${Panel} title="AI fluency by role" eyebrow="Readiness signal">
-              <${DataTable} columns=${fluencyColumns} rows=${fluencyByRole} />
-            <//>
-
-            <${Panel} title="Training runway" eyebrow="Phase-one completion">
-              <div className="readiness-stack">
-                ${upskillingMetrics.map(
-                  (metric) => html`
-                    <div className="readiness-item" key=${metric.label}>
-                      <div>
-                        <span>${metric.label}</span>
-                        <strong>${metric.value}</strong>
-                      </div>
-                      <${ProgressBar} value=${metric.progress} compact=${true} />
-                    </div>
-                  `
-                )}
-              </div>
-            <//>
-          </div>
-        <//>
-
-        <${DashboardSection}
-          id="champions"
-          eyebrow="07"
-          title="AI Champions"
-          description="Distributed change leadership, office activation, and practice-level influence."
-        >
-          <${MetricGrid} metrics=${championMetrics} columns="four" />
-
-          <${Panel} title="Champion Influence Index" eyebrow="Community activation quality">
-            <div className="influence-grid">
-              ${championInfluence.map(
-                (item) => html`
-                  <div className="influence-card" key=${item.dimension}>
-                    <span>${item.dimension}</span>
-                    <strong>${item.score}</strong>
-                    <${ProgressBar} value=${item.score} compact=${true} />
-                  </div>
-                `
-              )}
-            </div>
-          <//>
-        <//>
-
-        <${DashboardSection}
-          id="governance"
-          eyebrow="08"
-          title="Governance"
-          description="Usage controls, credit consumption, and risk posture for responsible scale."
-        >
-          <div className="risk-banner">
-            <${AlertTriangle} size=${21} />
-            <div>
-              <span>Risk status: High</span>
-              <strong>Restrict 5.4 Pro to approved business-use cases with monitoring.</strong>
-            </div>
-          </div>
-
-          <${MetricGrid} metrics=${governanceMetrics} columns="five" />
-
-          <div className="panel-grid panel-grid--two">
-            <${Panel} title="Monthly credit forecast" eyebrow="Actual burn versus cap">
-              <${GovernanceForecastChart} />
-            <//>
-
-            <${Panel} title="Control posture" eyebrow="Recommended action">
-              <div className="governance-action">
-                <${CircleDollarSign} size=${28} />
-                <h4>Forecast is tracking 3.8% over cap.</h4>
-                <p>
-                  Maintain Codex growth for approved builder and engineering workflows while tightening
-                  access to premium models for unapproved exploratory usage.
-                </p>
-                <div className="policy-list">
-                  <span>Approved use cases</span>
-                  <span>Spend monitoring</span>
-                  <span>Monthly exception review</span>
-                  <span>Leader-owned adoption goals</span>
-                </div>
-              </div>
-            <//>
           </div>
         <//>
       </main>
